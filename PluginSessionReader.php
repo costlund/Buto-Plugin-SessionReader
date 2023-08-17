@@ -8,31 +8,31 @@ class PluginSessionReader {
   private static function handler_phpbinary($content) {
     $array = array();
     $offset = 0;
-    while ($offset < strlen($content)) {
+    while ($offset < wfPhpfunc::strlen($content)) {
       $num = ord($content[$offset]);
       $offset += 1;
-      $varname = substr($content, $offset, $num);
+      $varname = wfPhpfunc::substr($content, $offset, $num);
       $offset += $num;
-      $data = unserialize(substr($content, $offset));
+      $data = unserialize(wfPhpfunc::substr($content, $offset));
       $array[$varname] = $data;
-      $offset += strlen(serialize($data));
+      $offset += wfPhpfunc::strlen(serialize($data));
     }
     return $array;
   }
   private static function handler_php($content) {
     $array = array();
     $offset = 0;
-    while ($offset < strlen($content)) {
-      if (!strstr(substr($content, $offset), "|")) {
+    while ($offset < wfPhpfunc::strlen($content)) {
+      if (!wfPhpfunc::strstr(wfPhpfunc::substr($content, $offset), "|")) {
         throw new Exception("PluginSessinReader says: Invalid data (".substr($content, $offset).").");
       }
       $pos = strpos($content, "|", $offset);
       $num = $pos - $offset;
-      $varname = substr($content, $offset, $num);
+      $varname = wfPhpfunc::substr($content, $offset, $num);
       $offset += $num + 1;
-      $data = unserialize(substr($content, $offset));
+      $data = unserialize(wfPhpfunc::substr($content, $offset));
       $array[$varname] = $data;
-      $offset += strlen(serialize($data));
+      $offset += wfPhpfunc::strlen(serialize($data));
     }
     return $array;
   }
